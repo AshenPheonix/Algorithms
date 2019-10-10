@@ -19,15 +19,29 @@ def knapsack_solver(items, capacity):
   
   vplb.sort(key = sort_on,reverse=True)
   
-  print('sorted list')
   for item in vplb:
     print('vplb:', item['vplb'],'item:',item['item'])
 
   for item in vplb:
-    print('capcity tracker before,', capacity-sum([tested.size for tested in final]),"| item size: ",item['item'].size)
     if item['item'].size < capacity - sum([tested.size for tested in final]):
       final.append(item['item'])
   
+
+  temp = [item for item in final]
+  while capacity - sum([tested.size for tested in final]) > 0 and len(temp)>0:
+    print('culling', temp)
+    removed = temp.pop()
+    for item in vplb:
+      if item['item'] == removed:
+        vplb.remove(item)
+        break
+    for item in vplb:
+      if item['item'].size < capacity - sum([tested.size for tested in temp]):
+        print('adding temp')
+        temp.append(item['item'])
+
+  if sum([item.value for item in temp]) > sum([item.value for item in final]):
+    final = temp
 
   final.sort(key=sort_final)
 
