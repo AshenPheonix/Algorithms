@@ -7,15 +7,17 @@ from itertools import combinations
 # a solution that is more efficient than the naive 
 # recursive solution
 def eating_cookies(n, cache=None):
-  if n<=1:
+  if cache==None:
+    cache=[0] * 100
+  if n<0:
+    return 0
+  elif n<=1:
     return 1
-  elif (cache != None and cache <= 1):
-    return 1
+  elif cache[n]!=0:
+    return cache[n]
   else:
-    if cache==None:
-      cache=n
-    
-    return (len(list( combinations(range(n),cache) ) ) + eating_cookies(n,cache-1))
+    cache[n] = eating_cookies(n-1,cache) + eating_cookies(n-2,cache) + eating_cookies(n-3,cache)
+    return cache[n]
   
 
 if __name__ == "__main__":
